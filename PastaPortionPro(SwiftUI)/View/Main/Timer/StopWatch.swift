@@ -712,7 +712,8 @@ struct WatchScreen: View {
         
         if isStartButtonTapped{
             // Start timer and update widget
-            TimerDataStore.shared.startTimer(duration: TimeInterval(seconds))
+            // TODO: Enable widget support once TimerDataStore is added to project
+            // TimerDataStore.shared.startTimer(duration: TimeInterval(seconds))
             
             self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true){ timer in
                 if self.seconds > 0{
@@ -720,14 +721,16 @@ struct WatchScreen: View {
                 }else{
                     timer.invalidate()
                     // Stop timer in widget
-                    TimerDataStore.shared.stopTimer()
+                    // TODO: Enable widget support once TimerDataStore is added to project
+                    // TimerDataStore.shared.stopTimer()
                 }
             }
             
         }else{
             timer?.invalidate()
             // Pause timer in widget
-            TimerDataStore.shared.pauseTimer()
+            // TODO: Enable widget support once TimerDataStore is added to project
+            // TimerDataStore.shared.pauseTimer()
         }
         
     }

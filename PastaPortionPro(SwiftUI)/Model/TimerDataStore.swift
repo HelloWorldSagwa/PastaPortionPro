@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if canImport(WidgetKit)
 import WidgetKit
+#endif
 
 class TimerDataStore {
     static let shared = TimerDataStore()
