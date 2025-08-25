@@ -161,7 +161,7 @@ class NotificationManager {
 
 class Calculate {
     
-    var realm = try! Realm()
+    var realm: Realm?
     
     var userHistory : Results<UserHistory>
     var userHistoryById : Results<UserHistory>
@@ -170,21 +170,33 @@ class Calculate {
     var userProfileById : Results<UserProfile>
     
     init(){
- 
-        
-        userHistory = realm.objects(UserHistory.self)
-        
-        userHistoryById = userHistory.where{
-            try! $0.userID == ObjectId(string: Settings._id)
+        do {
+            realm = try Realm()
+            guard let realm = realm else { 
+                userHistory = UserHistory().emptyResults()
+                userHistoryById = userHistory
+                userProfile = UserProfile().emptyResults()
+                userProfileById = userProfile
+                return 
+            }
+            
+            userHistory = realm.objects(UserHistory.self)
+            
+            userHistoryById = userHistory.where{
+                ($0.userID == ObjectId(string: Settings._id)) ?? false
+            }
+            
+            userProfile = realm.objects(UserProfile.self)
+            userProfileById = userProfile.where{
+                ($0._id == ObjectId(string: Settings._id)) ?? false
+            }
+        } catch {
+            print("Realm initialization failed: \(error)")
+            userHistory = UserHistory().emptyResults()
+            userHistoryById = userHistory
+            userProfile = UserProfile().emptyResults()
+            userProfileById = userProfile
         }
-
-        
-        userProfile = realm.objects(UserProfile.self)
-        userProfileById = userProfile.where{
-            try! $0._id == ObjectId(string: Settings._id)
-        }
-        
-        
     }
     
     
@@ -214,34 +226,44 @@ class Calculate {
 
     }
     
-    func saveCustomData(pastaPoint: Float, miuntes: Float, calories: Float){
+    func saveCustomData(pastaPoint: Float, minutes: Float, calories: Float){
       
-        let thawUserProfileById = userProfileById.thaw()!
-        try! realm.write{
-            
-            thawUserProfileById[0].customCal = calories
-            thawUserProfileById[0].customMinutes = miuntes
-            thawUserProfileById[0].customPastaPoint = pastaPoint
+        guard let thawUserProfileById = userProfileById.thaw() else { return }
+        do {
+            try realm?.write{
+                thawUserProfileById[0].customCal = calories
+                thawUserProfileById[0].customMinutes = minutes
+                thawUserProfileById[0].customPastaPoint = pastaPoint
+            }
+        } catch {
+            print("Failed to save custom data: \(error)")
         }
     
     }
     
     func saveCustomPastaPoint(pastaPoint: Float, calories: Float){
       
-        let thawUserProfileById = userProfileById.thaw()!
-        try! realm.write{
-            
-            thawUserProfileById[0].customCal = calories
-            thawUserProfileById[0].customPastaPoint = pastaPoint
+        guard let thawUserProfileById = userProfileById.thaw() else { return }
+        do {
+            try realm?.write{
+                thawUserProfileById[0].customCal = calories
+                thawUserProfileById[0].customPastaPoint = pastaPoint
+            }
+        } catch {
+            print("Failed to save custom pasta point: \(error)")
         }
     
     }
     
-    func saveCustomMinutes( miuntes: Float){
+    func saveCustomMinutes(minutes: Float){
       
-        let thawUserProfileById = userProfileById.thaw()!
-        try! realm.write{
-            thawUserProfileById[0].customMinutes = miuntes
+        guard let thawUserProfileById = userProfileById.thaw() else { return }
+        do {
+            try realm?.write{
+                thawUserProfileById[0].customMinutes = minutes
+            }
+        } catch {
+            print("Failed to save custom minutes: \(error)")
         }
     
     }

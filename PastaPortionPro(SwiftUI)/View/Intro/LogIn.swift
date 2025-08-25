@@ -227,18 +227,10 @@ struct LogIn: View {
                                 }
                             })
                             .onAppear(perform: {
-                                if currentUserCount >= freeUserCountLimit{
-                                    isLimitReached = true
-                                }else{
-                                    isLimitReached = false
-                                }
+                                isLimitReached = currentUserCount >= freeUserCountLimit
                             })
                             .onChange(of: currentUserCount, perform: { value in
-                                if currentUserCount >= freeUserCountLimit{
-                                    isLimitReached = true
-                                }else{
-                                    isLimitReached = false
-                                }
+                                isLimitReached = value >= freeUserCountLimit
                             })
                             .sheet(isPresented: $showPurchaseSheet) { // Moved sheet here
                                 InAppPurchase()
@@ -255,13 +247,6 @@ struct LogIn: View {
                     }
                     .padding(.horizontal, 20)
                     
-//                    .frame(width: 350)
-                
-//                    .onChange(of: freeUserCount, perform: { value in
-//                        if value < 2 {
-//                            isLimitReached = false
-//                        }
-//                    })
                     
                 }
                 

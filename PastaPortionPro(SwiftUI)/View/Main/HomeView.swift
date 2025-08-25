@@ -9,24 +9,6 @@ import SwiftUI
 import UserNotifications
 
 
-// 설정 옵션
-// 1. Home : 최초 탭은 무엇으로 할것인가?
-// 2. History : 평균과 모스트는 닫을까 말까?
-// 3. Portion : Custom옵션 버튼 위치 조절 모달 팝업 창 띄우고, 설정창은.. 커스텀을 먼저 보여줄거냐?
-// 4. Timer : Customㅇ르 먼저 보여줄거냐? 아니냐?
-
-/*
- 
- *** 1.3.0 변경사항 ***
- 1. 광고 제거 - 유료전환
- 2. 아이폰16 지원
- 3. 앱 평가 추천 기능 추가
- 
- 
- 
- */
-
-
 struct HomeView: View {
     
     @State private var selectedTab : String = "Home"
@@ -76,9 +58,6 @@ struct HomeView: View {
                 .tabItem {
                     Image(systemName: deactivateAllViews ? "" : "person.circle.fill")
                     Text(deactivateAllViews ? "" : "MY")
-                    
-                    //                    Image(systemName: "person.circle.fill")
-                    //                    Text("MY")
                 }
                 .tag("Settings")
         }
@@ -95,38 +74,6 @@ struct HomeView: View {
                 // 관련 데이터 초기화
                 dataRefresh() // PPPBrain
             }
-            
-
-            
-            // 애드몹 관련 -> 1.3.0 삭제
-//            if Settings.premiumAccess || deactivateAllViews {
-//                if admobCount > 0{
-//                    admobCount = 0
-//                }
-//            }else{
-
-                
-                // 타이머 선택시 포션 선택시 지체없이 바로 실행 : 첫번째 로그인 때는 봐줌
-//                if !Settings.firstLogin && selectedTab == "Portion"{
-//                    interstitialAdManager.loadInterstitialAd() // v1.2.0에서 광고 로드는 한번만
-//                    interstitialAdManager.displayInterstitialAd()
-//                    admobCount = 0
-//                }
-//                
-                
-                // 애드몹 최대 탭 횟수에 도달했을 경우 - v1.2.0에서 삭제
-//                admobCount += 1
-//                if admobCount == admobCountRange {
-//                    
-//                    print("admobCountRange :", admobCountRange)
-//                    
-//                    interstitialAdManager.displayInterstitialAd()
-//                    admobCount = 0
-//                }
-                
-//            }
-            
-            
             
         }
         

@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-import Combine
-import FirebaseCore                 // Firebase 추가 - v1.1.0
+import FirebaseCore
 import FirebaseAnalytics
 
 @main
