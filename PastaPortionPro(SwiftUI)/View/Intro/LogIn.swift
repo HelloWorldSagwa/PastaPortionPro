@@ -9,7 +9,6 @@ import SwiftUI
 import RealmSwift
 import AdSupport
 import AppTrackingTransparency      // 광고 트래킹권한 요청
-import GoogleMobileAds              // 구글 애드몹
 import FirebaseCore                 // Firebase 추가 - v1.1.0
 import FirebaseAnalytics
 
@@ -226,8 +225,6 @@ struct LogIn: View {
                                         }
                                     }
                                 }
-                                
-                                GADMobileAds.sharedInstance().start(completionHandler: nil)
                             })
                             .onAppear(perform: {
                                 if currentUserCount >= freeUserCountLimit{

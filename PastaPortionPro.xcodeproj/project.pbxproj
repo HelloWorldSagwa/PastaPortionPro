@@ -43,29 +43,23 @@
 		B175CAD52C07716000C1B384 /* PortionWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175CAD42C07716000C1B384 /* PortionWarning.swift */; };
 		B1788E862B4AF1F800DB0455 /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1788E852B4AF1F800DB0455 /* LogIn.swift */; };
 		B1788E882B4F6A6100DB0455 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1788E872B4F6A6000DB0455 /* Data.swift */; };
-		B18938CA2BCBC1A100138EE2 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = B18938C92BCBC1A100138EE2 /* Realm */; };
-		B18938CC2BCBC1A100138EE2 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B18938CB2BCBC1A100138EE2 /* RealmSwift */; };
 		B19478002BDA4C01002BF1F0 /* HomeViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19477FF2BDA4C01002BF1F0 /* HomeViewCustom.swift */; };
+		B1A737452E5C8E7100A261D7 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = B1A737442E5C8E7100A261D7 /* Realm */; };
+		B1A737482E5C910500A261D7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B1A737472E5C910500A261D7 /* FirebaseAnalytics */; };
+		B1A7374A2E5C911700A261D7 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = B1A737492E5C911700A261D7 /* FirebaseAppCheck */; };
+		B1A7374C2E5C920A00A261D7 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B1A7374B2E5C920A00A261D7 /* RealmSwift */; };
 		B1B2A0372B97127900CCCD13 /* CommonViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B2A0362B97127900CCCD13 /* CommonViewStyle.swift */; };
 		B1B4220A2C3ECCE7009D2BC3 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B1B422092C3ECCE7009D2BC3 /* Localizable.xcstrings */; };
 		B1BD89602C357A0400BC717C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B1BD895F2C357A0400BC717C /* GoogleService-Info.plist */; };
-		B1BD89AB2C358D4900BC717C /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = B1BD89AA2C358D4900BC717C /* FirebaseDatabase */; };
 		B1E3E7FE2BFFFF63001F125A /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E7FD2BFFFF63001F125A /* Welcome.swift */; };
 		B1E3E8002C008E47001F125A /* HomeViewOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E7FF2C008E47001F125A /* HomeViewOption.swift */; };
 		B1E3E8022C00B1F1001F125A /* HistoryOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E8012C00B1F1001F125A /* HistoryOption.swift */; };
 		B1E3E8042C00D999001F125A /* PortionCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E8032C00D999001F125A /* PortionCustom.swift */; };
 		B1E3E8062C00DD2E001F125A /* PortionOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E8052C00DD2E001F125A /* PortionOption.swift */; };
-		B1EE18002C35605C00BC1306 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B1EE17FF2C35605C00BC1306 /* FirebaseAnalytics */; };
-		B1EE18022C35605C00BC1306 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = B1EE18012C35605C00BC1306 /* FirebaseAnalyticsOnDeviceConversion */; };
-		B1EE18042C35605C00BC1306 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B1EE18032C35605C00BC1306 /* FirebaseAnalyticsSwift */; };
-		B1EE18062C35605C00BC1306 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = B1EE18052C35605C00BC1306 /* FirebaseAnalyticsWithoutAdIdSupport */; };
-		B1EE18082C35605C00BC1306 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = B1EE18072C35605C00BC1306 /* FirebaseAppCheck */; };
 		B1F94E712BD47E75005E04C9 /* newViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F94E702BD47E75005E04C9 /* newViewTest.swift */; };
 		B1FC86052BF3793400636ED8 /* SoundTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FC86042BF3793300636ED8 /* SoundTest.swift */; };
 		B1FC86072BF3797D00636ED8 /* StopWatchTwoMinutesAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FC86062BF3797D00636ED8 /* StopWatchTwoMinutesAlert.swift */; };
 		B1FDD8332B7238DF001F8E28 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FDD8322B7238DF001F8E28 /* About.swift */; };
-		B1FEC16C2C0DB1BC00A3A703 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = B1FEC16B2C0DB1BC00A3A703 /* GoogleMobileAds */; };
-		B1FEC16E2C0DB63400A3A703 /* GoogleAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FEC16D2C0DB63400A3A703 /* GoogleAdView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,7 +132,6 @@
 		B1FC86042BF3793300636ED8 /* SoundTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundTest.swift; sourceTree = "<group>"; };
 		B1FC86062BF3797D00636ED8 /* StopWatchTwoMinutesAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchTwoMinutesAlert.swift; sourceTree = "<group>"; };
 		B1FDD8322B7238DF001F8E28 /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
-		B1FEC16D2C0DB63400A3A703 /* GoogleAdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleAdView.swift; sourceTree = "<group>"; };
 		B1FEC16F2C0DB69700A3A703 /* PastaPortionPro-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PastaPortionPro-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -147,16 +140,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1BD89AB2C358D4900BC717C /* FirebaseDatabase in Frameworks */,
-				B1FEC16C2C0DB1BC00A3A703 /* GoogleMobileAds in Frameworks */,
-				B1EE18022C35605C00BC1306 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
-				B18938CC2BCBC1A100138EE2 /* RealmSwift in Frameworks */,
-				B18938CA2BCBC1A100138EE2 /* Realm in Frameworks */,
-				B1EE18042C35605C00BC1306 /* FirebaseAnalyticsSwift in Frameworks */,
-				B1EE18002C35605C00BC1306 /* FirebaseAnalytics in Frameworks */,
+				B1A7374A2E5C911700A261D7 /* FirebaseAppCheck in Frameworks */,
 				B1668ABE2C0DFE4300DCAA12 /* StoreKit.framework in Frameworks */,
-				B1EE18082C35605C00BC1306 /* FirebaseAppCheck in Frameworks */,
-				B1EE18062C35605C00BC1306 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				B1A737452E5C8E7100A261D7 /* Realm in Frameworks */,
+				B1A7374C2E5C920A00A261D7 /* RealmSwift in Frameworks */,
+				B1A737482E5C910500A261D7 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,7 +262,6 @@
 		B155A4AF2AA370BD001129F6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B1FEC16D2C0DB63400A3A703 /* GoogleAdView.swift */,
 				B1F94E702BD47E75005E04C9 /* newViewTest.swift */,
 				B16026BD2AC3112000DAE94C /* Intro */,
 				B16026BE2AC3113D00DAE94C /* Main */,
@@ -438,15 +425,10 @@
 			);
 			name = PastaPortionPro;
 			packageProductDependencies = (
-				B18938C92BCBC1A100138EE2 /* Realm */,
-				B18938CB2BCBC1A100138EE2 /* RealmSwift */,
-				B1FEC16B2C0DB1BC00A3A703 /* GoogleMobileAds */,
-				B1EE17FF2C35605C00BC1306 /* FirebaseAnalytics */,
-				B1EE18012C35605C00BC1306 /* FirebaseAnalyticsOnDeviceConversion */,
-				B1EE18032C35605C00BC1306 /* FirebaseAnalyticsSwift */,
-				B1EE18052C35605C00BC1306 /* FirebaseAnalyticsWithoutAdIdSupport */,
-				B1EE18072C35605C00BC1306 /* FirebaseAppCheck */,
-				B1BD89AA2C358D4900BC717C /* FirebaseDatabase */,
+				B1A737442E5C8E7100A261D7 /* Realm */,
+				B1A737472E5C910500A261D7 /* FirebaseAnalytics */,
+				B1A737492E5C911700A261D7 /* FirebaseAppCheck */,
+				B1A7374B2E5C920A00A261D7 /* RealmSwift */,
 			);
 			productName = "PastaPortionPro(SwiftUI)";
 			productReference = B1537D9D2A73BC730003064F /* PastaPortionPro.app */;
@@ -524,9 +506,8 @@
 			);
 			mainGroup = B1537D942A73BC730003064F;
 			packageReferences = (
-				B18938C82BCBC1A100138EE2 /* XCRemoteSwiftPackageReference "realm-swift" */,
-				B1FEC16A2C0DB1BC00A3A703 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
-				B1EE17FE2C35605C00BC1306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				B1A737432E5C8E7100A261D7 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				B1A737462E5C910500A261D7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = B1537D9E2A73BC730003064F /* Products */;
 			projectDirPath = "";
@@ -587,7 +568,6 @@
 				B1FDD8332B7238DF001F8E28 /* About.swift in Sources */,
 				B1788E882B4F6A6100DB0455 /* Data.swift in Sources */,
 				B1FC86052BF3793400636ED8 /* SoundTest.swift in Sources */,
-				B1FEC16E2C0DB63400A3A703 /* GoogleAdView.swift in Sources */,
 				B1668AB82C0DEF1100DCAA12 /* InAppPurchaseManager.swift in Sources */,
 				B12F5B372BE4EEC9005EC07B /* StopWatch.swift in Sources */,
 				B155A4B42AA5DA19001129F6 /* HomeViewTabHome.swift in Sources */,
@@ -970,7 +950,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B18938C82BCBC1A100138EE2 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+		B1A737432E5C8E7100A261D7 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-swift.git";
 			requirement = {
@@ -978,69 +958,36 @@
 				kind = branch;
 			};
 		};
-		B1EE17FE2C35605C00BC1306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		B1A737462E5C910500A261D7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.28.1;
-			};
-		};
-		B1FEC16A2C0DB1BC00A3A703 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.5.0;
+				minimumVersion = 12.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B18938C92BCBC1A100138EE2 /* Realm */ = {
+		B1A737442E5C8E7100A261D7 /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B18938C82BCBC1A100138EE2 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			package = B1A737432E5C8E7100A261D7 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = Realm;
 		};
-		B18938CB2BCBC1A100138EE2 /* RealmSwift */ = {
+		B1A737472E5C910500A261D7 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B18938C82BCBC1A100138EE2 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
-		};
-		B1BD89AA2C358D4900BC717C /* FirebaseDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B1EE17FE2C35605C00BC1306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabase;
-		};
-		B1EE17FF2C35605C00BC1306 /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B1EE17FE2C35605C00BC1306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = B1A737462E5C910500A261D7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		B1EE18012C35605C00BC1306 /* FirebaseAnalyticsOnDeviceConversion */ = {
+		B1A737492E5C911700A261D7 /* FirebaseAppCheck */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B1EE17FE2C35605C00BC1306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsOnDeviceConversion;
-		};
-		B1EE18032C35605C00BC1306 /* FirebaseAnalyticsSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B1EE17FE2C35605C00BC1306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsSwift;
-		};
-		B1EE18052C35605C00BC1306 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B1EE17FE2C35605C00BC1306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsWithoutAdIdSupport;
-		};
-		B1EE18072C35605C00BC1306 /* FirebaseAppCheck */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B1EE17FE2C35605C00BC1306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = B1A737462E5C910500A261D7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAppCheck;
 		};
-		B1FEC16B2C0DB1BC00A3A703 /* GoogleMobileAds */ = {
+		B1A7374B2E5C920A00A261D7 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B1FEC16A2C0DB1BC00A3A703 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
+			package = B1A737432E5C8E7100A261D7 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

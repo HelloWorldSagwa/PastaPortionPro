@@ -82,26 +82,15 @@ Our app uses Firebase to enhance functionality and user experience. While we do 
 
 This data is used to enhance app functionality and optimize user experience. Detailed information on the data collected by Firebase can be found in their privacy policy here: Firebase Privacy Policy.
 
-    2.    Ad Networks
+    2.    Data Protection
 
-Our app uses Google AdMob to provide personalized ads. Google AdMob may collect the following information:
+We ensure that all data collected through Firebase are handled in accordance with data protection laws. Please refer to their privacy policy for more details.
 
-•    Device identifiers (e.g., Advertising ID)
-•    IP address
-•    Location information
-•    App usage data
+    3.    Cookies and Tracking Technologies
 
-This information is used to provide a better ad experience. You can review Google AdMob’s privacy policy here: Google AdMob Privacy Policy.
+Our app may use cookies and similar tracking technologies via Firebase.
 
-    3.    Data Protection
-
-We ensure that all data collected through Firebase and third-party ad networks are handled in accordance with data protection laws. Please refer to their privacy policies for more details.
-
-    4.    Cookies and Tracking Technologies
-
-Our app may use cookies and similar tracking technologies via third-party ad networks and Firebase.
-
-    5.    User Rights
+    4.    User Rights
 
 Users have the right to access, modify, and delete their personal data, as well as to restrict or object to its processing. Specific rights vary by region:
 
@@ -113,7 +102,7 @@ Users have the right to access, modify, and delete their personal data, as well 
 
 To exercise these rights, contact us.
 
-    6.    Changes to this Policy
+    5.    Changes to this Policy
 
 This policy may change. Changes will be posted on this page and, if significant, notified through the app.
 
