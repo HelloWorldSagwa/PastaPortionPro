@@ -9,6 +9,7 @@ import SwiftUI
 import RealmSwift
 import UserNotifications
 import AVFoundation
+import WidgetKit
 
 
 
@@ -710,19 +711,23 @@ struct WatchScreen: View {
         timer?.invalidate()
         
         if isStartButtonTapped{
+            // Start timer and update widget
+            TimerDataStore.shared.startTimer(duration: TimeInterval(seconds))
             
             self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true){ timer in
                 if self.seconds > 0{
                     self.seconds -= 1
                 }else{
-
                     timer.invalidate()
-                   
+                    // Stop timer in widget
+                    TimerDataStore.shared.stopTimer()
                 }
             }
             
         }else{
             timer?.invalidate()
+            // Pause timer in widget
+            TimerDataStore.shared.pauseTimer()
         }
         
     }
