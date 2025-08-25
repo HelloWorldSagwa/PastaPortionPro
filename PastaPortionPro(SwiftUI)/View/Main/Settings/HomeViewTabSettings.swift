@@ -200,9 +200,13 @@ struct HomeViewTabSettings: View {
                             
                             // 로그아웃한 날짜 업데에트
                             let calculate = Calculate()
-                            let realm = calculate.realm
-                            try! realm.write{
-                                calculate.userProfileById.first?.updatedAt = Date()
+                            guard let realm = calculate.realm else { return }
+                            do {
+                                try realm.write{
+                                    calculate.userProfileById.first?.updatedAt = Date()
+                                }
+                            } catch {
+                                print("Failed to update logout date: \(error)")
                             }
                             
                             // 관련 데이터 초기화
@@ -511,18 +515,21 @@ struct HomeViewTabSettings: View {
     func averageForFreeUser(){
         
         let calculate = Calculate()
-        let realm = calculate.realm
+        guard let realm = calculate.realm else { return }
         
         if !Settings.premiumAccess{
             let averagePastaPoint = calculate.averageFiveHistories()[0]
             let averageMinute = calculate.averageFiveHistories()[1]
             let averageKcal = averagePastaPoint * 200
             
-            
-            try! realm.write{
-                calculate.userProfileById.first?.avgPastaPoint = averagePastaPoint
-                calculate.userProfileById.first?.avgCal = averageKcal
-                calculate.userProfileById.first?.avgMinutes = averageMinute
+            do {
+                try realm.write{
+                    calculate.userProfileById.first?.avgPastaPoint = averagePastaPoint
+                    calculate.userProfileById.first?.avgCal = averageKcal
+                    calculate.userProfileById.first?.avgMinutes = averageMinute
+                }
+            } catch {
+                print("Failed to save free user averages: \(error)")
             }
             
         }else{
@@ -534,10 +541,16 @@ struct HomeViewTabSettings: View {
             let averageMinute = calculate.average(search: "cookMinutes")
             let averageKcal = calculate.average(search: "kcal")
             
-            try! realm.write{
-                calculate.userProfileById.thaw()!.first?.avgPastaPoint = averagePastaPoint
-                calculate.userProfileById.thaw()!.first?.avgCal = averageKcal
-                calculate.userProfileById.thaw()!.first?.avgMinutes = averageMinute
+            do {
+                try realm.write{
+                    if let userProfile = calculate.userProfileById.thaw()?.first {
+                        userProfile.avgPastaPoint = averagePastaPoint
+                        userProfile.avgCal = averageKcal
+                        userProfile.avgMinutes = averageMinute
+                    }
+                }
+            } catch {
+                print("Failed to save premium user averages: \(error)")
             }
             
             // <--- 1.0.2 추가

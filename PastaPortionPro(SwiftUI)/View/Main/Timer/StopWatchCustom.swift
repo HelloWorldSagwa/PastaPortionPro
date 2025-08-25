@@ -137,10 +137,14 @@ struct StopWatchCustom: View {
         
         
         Button(action: {
-            let realm = calculate.realm.thaw()
+            guard let realm = calculate.realm?.thaw() else { return }
             
-            try! realm.write{
-                calculate.userProfileById.first?.customMinutes = minutes
+            do {
+                try realm.write{
+                    calculate.userProfileById.first?.customMinutes = minutes
+                }
+            } catch {
+                print("Failed to save custom minutes: \(error)")
             }
             
             seconds = minutes * 60

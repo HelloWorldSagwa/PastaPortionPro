@@ -186,12 +186,12 @@ class Calculate {
             userHistory = realm.objects(UserHistory.self)
             
             userHistoryById = userHistory.where{
-                $0.userID == ObjectId(string: Settings._id)
+                (try? $0.userID == ObjectId(string: Settings._id)) ?? false
             }
             
             userProfile = realm.objects(UserProfile.self)
             userProfileById = userProfile.where{
-                $0._id == ObjectId(string: Settings._id)
+                (try? $0._id == ObjectId(string: Settings._id)) ?? false
             }
         } catch {
             print("Realm initialization failed: \(error)")

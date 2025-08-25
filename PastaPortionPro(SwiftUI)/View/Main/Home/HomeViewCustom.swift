@@ -319,7 +319,7 @@ struct HomeViewCustom: View {
             if calculate.userProfileById.isEmpty{
                 isCustomViewTapped.toggle()
             }else{
-                calculate.saveCustomData(pastaPoint: pastaPoint, miuntes: minutes, calories: calories)
+                calculate.saveCustomData(pastaPoint: pastaPoint, minutes: minutes, calories: calories)
                 isCustomViewTapped.toggle()
                 
                 print("The Data Succesfully Saved !\(calculate.userProfileById)")
