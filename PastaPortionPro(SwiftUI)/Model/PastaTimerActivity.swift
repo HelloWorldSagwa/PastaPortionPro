@@ -35,24 +35,37 @@ struct PastaTimerLiveActivity: Widget {
             DynamicIsland {
                 // Expanded UI
                 DynamicIslandExpandedRegion(.leading) {
-                    HStack {
-                        Image(systemName: "timer")
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "timer")
+                                .font(.caption)
+                                .foregroundColor(Color("mainRed"))
+                            Text(context.attributes.pastaName)
+                                .font(.caption)
+                                .foregroundColor(.primary)
+                        }
+                        Text(formatTime(context.state.remainingTime))
+                            .font(.title3.monospacedDigit().bold())
                             .foregroundColor(Color("mainRed"))
-                        Text(context.attributes.pastaName)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
                     }
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text(formatTime(context.state.remainingTime))
-                        .font(.title2.monospacedDigit())
-                        .foregroundColor(Color("mainRed"))
-                }
-                DynamicIslandExpandedRegion(.center) {
-                    ProgressView(value: Double(context.state.remainingTime), 
-                                total: Double(context.attributes.totalTime))
-                        .progressViewStyle(LinearProgressViewStyle())
-                        .tint(Color("mainRed"))
+                    // Circular Progress (like in the app)
+                    ZStack {
+                        Circle()
+                            .stroke(Color.gray.opacity(0.2), lineWidth: 3)
+                            .frame(width: 50, height: 50)
+                        
+                        Circle()
+                            .trim(from: 0, to: 1.0 - (CGFloat(context.state.remainingTime) / CGFloat(context.attributes.totalTime)))
+                            .stroke(Color("mainRed"), lineWidth: 3)
+                            .frame(width: 50, height: 50)
+                            .rotationEffect(.degrees(-90))
+                        
+                        Text("\(Int((1.0 - Double(context.state.remainingTime) / Double(context.attributes.totalTime)) * 100))%")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     HStack {
@@ -131,33 +144,22 @@ struct LockScreenLiveActivityView: View {
             
             // Timer Display
             HStack {
-                Text(formatTime(context.state.remainingTime))
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .monospacedDigit()
-                    .foregroundColor(Color("mainRed"))
-                
-                Spacer()
-                
-                // Progress Circle
-                ZStack {
-                    Circle()
-                        .stroke(Color.gray.opacity(0.2), lineWidth: 4)
-                        .frame(width: 60, height: 60)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(formatTime(context.state.remainingTime))
+                        .font(.system(size: 48, weight: .bold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundColor(Color("mainRed"))
                     
-                    Circle()
-                        .trim(from: 0, to: CGFloat(context.state.remainingTime) / CGFloat(context.attributes.totalTime))
-                        .stroke(Color("mainRed"), lineWidth: 4)
-                        .frame(width: 60, height: 60)
-                        .rotationEffect(.degrees(-90))
-                    
-                    Text("\(Int(Double(context.state.remainingTime) / Double(context.attributes.totalTime) * 100))%")
+                    Text("\(Int((1.0 - Double(context.state.remainingTime) / Double(context.attributes.totalTime)) * 100))% complete")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
+                
+                Spacer()
             }
             
-            // Progress Bar
-            ProgressView(value: Double(context.state.remainingTime), 
+            // Progress Bar (shows progress, not remaining)
+            ProgressView(value: Double(context.attributes.totalTime - context.state.remainingTime), 
                         total: Double(context.attributes.totalTime))
                 .progressViewStyle(LinearProgressViewStyle())
                 .tint(Color("mainRed"))
