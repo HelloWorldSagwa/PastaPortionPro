@@ -10,6 +10,7 @@ import RealmSwift
 import UserNotifications
 import AVFoundation
 import WidgetKit
+import ActivityKit
 
 
 
@@ -711,26 +712,30 @@ struct WatchScreen: View {
         timer?.invalidate()
         
         if isStartButtonTapped{
-            // Start timer and update widget
-            // TODO: Enable widget support once TimerDataStore is added to project
-            // TimerDataStore.shared.startTimer(duration: TimeInterval(seconds))
+            // Start Live Activity for Dynamic Island and Lock Screen
+            // TODO: Enable Live Activity once PastaTimerActivity.swift is added to project
+            // let pastaName = "Pasta"  // Default pasta name
+            // PastaTimerActivityManager.shared.startActivity(pastaName: pastaName, totalSeconds: seconds)
             
             self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true){ timer in
                 if self.seconds > 0{
                     self.seconds -= 1
+                    // Update Live Activity
+                    // TODO: Enable Live Activity once PastaTimerActivity.swift is added to project
+                    // PastaTimerActivityManager.shared.updateActivity(remainingSeconds: self.seconds)
                 }else{
                     timer.invalidate()
-                    // Stop timer in widget
-                    // TODO: Enable widget support once TimerDataStore is added to project
-                    // TimerDataStore.shared.stopTimer()
+                    // Stop Live Activity
+                    // TODO: Enable Live Activity once PastaTimerActivity.swift is added to project
+                    // PastaTimerActivityManager.shared.stopActivity()
                 }
             }
             
         }else{
             timer?.invalidate()
-            // Pause timer in widget
-            // TODO: Enable widget support once TimerDataStore is added to project
-            // TimerDataStore.shared.pauseTimer()
+            // Pause Live Activity
+            // TODO: Enable Live Activity once PastaTimerActivity.swift is added to project
+            // PastaTimerActivityManager.shared.pauseActivity()
         }
         
     }
