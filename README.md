@@ -36,11 +36,6 @@ open PastaPortionPro.xcodeproj
 
 ### Required Swift Packages
 
-#### Google Mobile Ads
-- **URL**: `https://github.com/googleads/swift-package-manager-google-mobile-ads.git`
-- **Version**: 11.5.0
-- **Product**: GoogleMobileAds
-
 #### Realm Swift
 - **URL**: `https://github.com/realm/realm-swift.git`
 - **Branch**: master
@@ -82,7 +77,12 @@ PastaPortionPro/
 
 ## Version History
 
-### v1.3.0 (Latest)
+### v1.3.1 (Latest)
+- Completely removed Google AdMob SDK and all advertising code
+- Simplified codebase for premium-only version
+- Reduced app size and improved performance
+
+### v1.3.0
 - Removed ads - converted to premium-only
 - Added iPhone 16 support
 - Added app rating recommendation feature

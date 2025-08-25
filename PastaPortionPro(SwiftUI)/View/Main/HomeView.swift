@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import GoogleMobileAds
 import UserNotifications
 
 
@@ -33,11 +32,6 @@ struct HomeView: View {
     @State private var selectedTab : String = "Home"
     @EnvironmentObject var presentData : PresentData
     @AppStorage("deactivateAllViews") private var deactivateAllViews: Bool = Settings.deactivateAllViews
-    
-    // 전면광고
-    var admobCountRange : Int  = 5
-    @State var admobCount : Int = 0
-    @StateObject private var interstitialAdManager = InterstitialAdsManager()
     
     // 웰컴시트
     @State var firstLogin : Bool = false

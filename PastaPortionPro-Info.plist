@@ -6,10 +6,6 @@
 	<true/>
 	<key>IDEPreferLogStreaming</key>
 	<true/>
-	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-1788255212204158~6900232411</string>
-	<key>GADIsAdManagerApp</key>
-	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

@@ -7,9 +7,6 @@
 
 import SwiftUI
 import Combine
-import AdSupport
-import AppTrackingTransparency      // 광고 트래킹권한 요청
-import GoogleMobileAds              // 구글 애드몹
 import FirebaseCore                 // Firebase 추가 - v1.1.0
 import FirebaseAnalytics
 
@@ -38,8 +35,6 @@ struct PastaPortionPro_App: App {
                     
                 }
                 .onAppear(perform: {
-                    
-                    GADMobileAds.sharedInstance().start(completionHandler: nil)
                     
                     Settings.deactivateAllViews = false // 앱실행시 밑에 탭바 살림
                     
