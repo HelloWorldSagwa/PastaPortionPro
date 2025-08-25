@@ -185,13 +185,20 @@ class Calculate {
             
             userHistory = realm.objects(UserHistory.self)
             
-            userHistoryById = userHistory.where{
-                (try? $0.userID == ObjectId(string: Settings._id)) ?? false
+            // Use filter with NSPredicate for safer querying
+            if let userId = try? ObjectId(string: Settings._id) {
+                userHistoryById = userHistory.filter("userID == %@", userId)
+            } else {
+                // Return empty results if ObjectId creation fails
+                userHistoryById = userHistory.filter("FALSEPREDICATE")
             }
             
             userProfile = realm.objects(UserProfile.self)
-            userProfileById = userProfile.where{
-                (try? $0._id == ObjectId(string: Settings._id)) ?? false
+            if let userId = try? ObjectId(string: Settings._id) {
+                userProfileById = userProfile.filter("_id == %@", userId)
+            } else {
+                // Return empty results if ObjectId creation fails
+                userProfileById = userProfile.filter("FALSEPREDICATE")
             }
         } catch {
             print("Realm initialization failed: \(error)")
