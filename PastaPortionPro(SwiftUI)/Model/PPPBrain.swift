@@ -172,10 +172,13 @@ class Calculate {
     init(){
         do {
             realm = try Realm()
-            guard let realm = realm else { 
-                userHistory = UserHistory().emptyResults()
+            guard let realm = realm else {
+                // Create empty realm and use empty results
+                let config = Realm.Configuration(inMemoryIdentifier: "EmptyRealm")
+                let emptyRealm = try! Realm(configuration: config)
+                userHistory = emptyRealm.objects(UserHistory.self)
                 userHistoryById = userHistory
-                userProfile = UserProfile().emptyResults()
+                userProfile = emptyRealm.objects(UserProfile.self)
                 userProfileById = userProfile
                 return 
             }
@@ -183,18 +186,21 @@ class Calculate {
             userHistory = realm.objects(UserHistory.self)
             
             userHistoryById = userHistory.where{
-                ($0.userID == ObjectId(string: Settings._id)) ?? false
+                $0.userID == ObjectId(string: Settings._id)
             }
             
             userProfile = realm.objects(UserProfile.self)
             userProfileById = userProfile.where{
-                ($0._id == ObjectId(string: Settings._id)) ?? false
+                $0._id == ObjectId(string: Settings._id)
             }
         } catch {
             print("Realm initialization failed: \(error)")
-            userHistory = UserHistory().emptyResults()
+            // Create empty realm for error case
+            let config = Realm.Configuration(inMemoryIdentifier: "EmptyRealm")
+            let emptyRealm = try! Realm(configuration: config)
+            userHistory = emptyRealm.objects(UserHistory.self)
             userHistoryById = userHistory
-            userProfile = UserProfile().emptyResults()
+            userProfile = emptyRealm.objects(UserProfile.self)
             userProfileById = userProfile
         }
     }
