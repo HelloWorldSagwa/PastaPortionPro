@@ -712,30 +712,55 @@ struct WatchScreen: View {
         timer?.invalidate()
         
         if isStartButtonTapped{
+            print("🚀 Timer started with \(seconds) seconds")
+            
             // Start Live Activity for Dynamic Island and Lock Screen
-            // TODO: Enable Live Activity once PastaTimerActivity.swift is added to project
-            // let pastaName = "Pasta"  // Default pasta name
-            // PastaTimerActivityManager.shared.startActivity(pastaName: pastaName, totalSeconds: seconds)
+            // NOTE: PastaTimerActivity.swift must be added to project target first
+            // Uncomment below when file is added to Xcode project
+            /*
+            #if canImport(ActivityKit)
+            if #available(iOS 16.1, *) {
+                let pastaName = "Pasta"  // Default pasta name
+                PastaTimerActivityManager.shared.startActivity(pastaName: pastaName, totalSeconds: seconds)
+            } else {
+                print("⚠️ Live Activity requires iOS 16.1+")
+            }
+            #endif
+            */
             
             self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true){ timer in
                 if self.seconds > 0{
                     self.seconds -= 1
-                    // Update Live Activity
-                    // TODO: Enable Live Activity once PastaTimerActivity.swift is added to project
-                    // PastaTimerActivityManager.shared.updateActivity(remainingSeconds: self.seconds)
+                    print("⏱️ Timer tick: \(self.seconds) seconds remaining")
+                    
+                    // Note: Live Activity uses Date-based countdown, no need for updates every second
                 }else{
                     timer.invalidate()
+                    print("✅ Timer completed")
+                    
                     // Stop Live Activity
-                    // TODO: Enable Live Activity once PastaTimerActivity.swift is added to project
-                    // PastaTimerActivityManager.shared.stopActivity()
+                    /*
+                    #if canImport(ActivityKit)
+                    if #available(iOS 16.1, *) {
+                        PastaTimerActivityManager.shared.stopActivity()
+                    }
+                    #endif
+                    */
                 }
             }
             
         }else{
             timer?.invalidate()
+            print("⏸️ Timer paused")
+            
             // Pause Live Activity
-            // TODO: Enable Live Activity once PastaTimerActivity.swift is added to project
-            // PastaTimerActivityManager.shared.pauseActivity()
+            /*
+            #if canImport(ActivityKit)
+            if #available(iOS 16.1, *) {
+                PastaTimerActivityManager.shared.pauseActivity()
+            }
+            #endif
+            */
         }
         
     }

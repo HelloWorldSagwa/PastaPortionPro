@@ -13,8 +13,9 @@ import SwiftUI
 struct PastaTimerActivityAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         // Dynamic state properties
-        var remainingTime: Int
+        var endTime: Date  // Changed to use Date for automatic countdown
         var isPaused: Bool
+        var remainingTime: Int  // Keep for display purposes
     }
     
     // Fixed properties
@@ -44,7 +45,8 @@ struct PastaTimerLiveActivity: Widget {
                                 .font(.caption)
                                 .foregroundColor(.primary)
                         }
-                        Text(formatTime(context.state.remainingTime))
+                        // Use timer countdown for real-time updates
+                        Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
                             .font(.title3.monospacedDigit().bold())
                             .foregroundColor(Color("mainRed"))
                     }
@@ -90,7 +92,7 @@ struct PastaTimerLiveActivity: Widget {
                     .foregroundColor(Color("mainRed"))
             } compactTrailing: {
                 // Compact trailing (Dynamic Island minimized)
-                Text(formatTime(context.state.remainingTime))
+                Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
                     .font(.caption.monospacedDigit())
                     .foregroundColor(Color("mainRed"))
             } minimal: {
@@ -145,7 +147,8 @@ struct LockScreenLiveActivityView: View {
             // Timer Display
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(formatTime(context.state.remainingTime))
+                    // Use timer countdown for real-time updates
+                    Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
                         .font(.system(size: 48, weight: .bold, design: .rounded))
                         .monospacedDigit()
                         .foregroundColor(Color("mainRed"))
@@ -186,7 +189,7 @@ class PastaTimerActivityManager {
     func startActivity(pastaName: String, totalSeconds: Int) {
         // Check if activities are enabled
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-            print("Live Activities are not enabled")
+            print("❌ Live Activities are not enabled")
             return
         }
         
@@ -198,69 +201,100 @@ class PastaTimerActivityManager {
             totalTime: totalSeconds
         )
         
+        let endTime = Date().addingTimeInterval(TimeInterval(totalSeconds))
         let initialState = PastaTimerActivityAttributes.ContentState(
-            remainingTime: totalSeconds,
-            isPaused: false
+            endTime: endTime,
+            isPaused: false,
+            remainingTime: totalSeconds
         )
         
         do {
             let activity = try Activity.request(
                 attributes: attributes,
-                content: .init(state: initialState, staleDate: nil),
+                content: .init(state: initialState, staleDate: endTime),
                 pushType: nil
             )
             self.currentActivity = activity
-            print("Started Live Activity with ID: \(activity.id)")
+            print("✅ Started Live Activity")
+            print("   - ID: \(activity.id)")
+            print("   - Pasta: \(pastaName)")
+            print("   - Duration: \(totalSeconds) seconds")
+            print("   - End Time: \(endTime)")
         } catch {
-            print("Failed to start Live Activity: \(error)")
+            print("❌ Failed to start Live Activity: \(error)")
         }
     }
     
     func updateActivity(remainingSeconds: Int, isPaused: Bool = false) {
-        guard let activity = currentActivity else { return }
+        guard let activity = currentActivity else { 
+            print("⚠️ No active Live Activity to update")
+            return 
+        }
         
+        let endTime = isPaused ? Date().addingTimeInterval(TimeInterval(remainingSeconds)) : activity.content.state.endTime
         let updatedState = PastaTimerActivityAttributes.ContentState(
-            remainingTime: remainingSeconds,
-            isPaused: isPaused
+            endTime: endTime,
+            isPaused: isPaused,
+            remainingTime: remainingSeconds
         )
         
         Task {
             await activity.update(using: updatedState)
+            print("📱 Updated Live Activity: \(remainingSeconds)s remaining, isPaused: \(isPaused)")
         }
     }
     
     func pauseActivity() {
-        guard let activity = currentActivity else { return }
+        guard let activity = currentActivity else { 
+            print("⚠️ No active Live Activity to pause")
+            return 
+        }
         
         Task {
             let state = activity.content.state
+            // Calculate remaining time from endTime
+            let remaining = max(0, Int(state.endTime.timeIntervalSinceNow))
             let pausedState = PastaTimerActivityAttributes.ContentState(
-                remainingTime: state.remainingTime,
-                isPaused: true
+                endTime: Date().addingTimeInterval(TimeInterval(remaining)),
+                isPaused: true,
+                remainingTime: remaining
             )
             await activity.update(using: pausedState)
+            print("⏸️ Paused Live Activity with \(remaining)s remaining")
         }
     }
     
     func resumeActivity() {
-        guard let activity = currentActivity else { return }
+        guard let activity = currentActivity else { 
+            print("⚠️ No active Live Activity to resume")
+            return 
+        }
         
         Task {
             let state = activity.content.state
+            let newEndTime = Date().addingTimeInterval(TimeInterval(state.remainingTime))
             let resumedState = PastaTimerActivityAttributes.ContentState(
-                remainingTime: state.remainingTime,
-                isPaused: false
+                endTime: newEndTime,
+                isPaused: false,
+                remainingTime: state.remainingTime
             )
             await activity.update(using: resumedState)
+            print("▶️ Resumed Live Activity with new end time: \(newEndTime)")
         }
     }
     
     func stopActivity() {
-        guard let activity = currentActivity else { return }
+        guard let activity = currentActivity else { 
+            print("⚠️ No active Live Activity to stop")
+            return 
+        }
         
         Task {
             await activity.end(nil, dismissalPolicy: .immediate)
-            self.currentActivity = nil
+            print("🛑 Stopped Live Activity: \(activity.id)")
+            await MainActor.run {
+                self.currentActivity = nil
+            }
         }
     }
 }
