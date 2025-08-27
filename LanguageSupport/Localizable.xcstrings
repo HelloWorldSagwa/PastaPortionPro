@@ -141,6 +141,9 @@
         }
       }
     },
+    "%.1f%%" : {
+
+    },
     "%.2f" : {
 
     },
@@ -174,6 +177,9 @@
 
     },
     "%@ Point" : {
+
+    },
+    "%@ remaining" : {
 
     },
     "%@%@" : {
@@ -224,6 +230,136 @@
 
     },
     "✓" : {
+
+    },
+    "⭐ Write Review" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⭐ 写评价"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⭐ 寫評價"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⭐ 寫評價"
+          }
+        }
+      }
+    },
+    "⭐ 리뷰 쓰기" : {
+
+    },
+    "🍝 Worth the Wait?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🍝 值得等待吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🍝 值得等待嗎？"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🍝 值得等待嗎？"
+          }
+        }
+      }
+    },
+    "🍝 오래 기다리셨죠?" : {
+
+    },
+    "📧 Send Feedback via Email" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📧 通过邮件发送反馈"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📧 透過郵件發送回饋"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📧 透過電郵發送意見"
+          }
+        }
+      }
+    },
+    "📧 이메일로 피드백 보내기" : {
+
+    },
+    "😊 Love it!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "😊 太棒了！"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "😊 太棒了！"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "😊 好正！"
+          }
+        }
+      }
+    },
+    "😊 최고예요!" : {
+
+    },
+    "😐 Not really" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "😐 一般般"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "😐 一般般"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "😐 麻麻地"
+          }
+        }
+      }
+    },
+    "😐 글쎄요" : {
 
     },
     "1 Day Ago" : {
@@ -292,6 +428,12 @@
           }
         }
       }
+    },
+    "3:45" : {
+
+    },
+    "7:30" : {
+
     },
     "50+" : {
 
@@ -694,6 +836,9 @@
         }
       }
     },
+    "Cooking" : {
+
+    },
     "Cooking times vary by brand; check the package." : {
       "localizations" : {
         "zh-Hans" : {
@@ -945,6 +1090,32 @@
     "DrwaingCircle" : {
 
     },
+    "Dynamic Island is finally here!\nCook with more convenience now\n\nHow do you like it?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "灵动岛终于来了！\n现在烹饪更加方便\n\n您觉得怎么样？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "動態島終於來了！\n現在烹飪更加方便\n\n您覺得怎麼樣？"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "動態島終於嚟咗！\n而家煮嘢更加方便\n\n你覺得點樣？"
+          }
+        }
+      }
+    },
+    "Dynamic Island 드디어 추가!\n이제 더 편하게 요리하세요\n\n어떠신가요?" : {
+
+    },
     "EASILY PORTION IT" : {
 
     },
@@ -996,6 +1167,9 @@
         }
       }
     },
+    "Ends at %@" : {
+
+    },
     "Enhanced History Management" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1020,6 +1194,9 @@
       }
     },
     "Eva (UI/UX Advisor)" : {
+
+    },
+    "Expanded View - Minimal" : {
 
     },
     "Firm and Chewy" : {
@@ -1159,6 +1336,29 @@
         }
       }
     },
+    "Glad you love it! 😊" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "很高兴您喜欢！😊"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "很高興您喜歡！😊"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好開心你鍾意！😊"
+          }
+        }
+      }
+    },
     "Got It" : {
       "localizations" : {
         "zh-Hans" : {
@@ -1199,6 +1399,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "幫助"
+          }
+        }
+      }
+    },
+    "Help other pasta lovers\ndiscover this app with\njust one quick review\n\n(Even super short is OK!)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "帮助其他意面爱好者\n发现这款应用\n只需一个简短评价\n\n（超短也可以！）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "幫助其他義大利麵愛好者\n發現這款應用\n只需一個簡短評價\n\n（超短也可以！）"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "幫助其他意粉愛好者\n發現呢個app\n只需一個簡短評價\n\n（好短都得！）"
           }
         }
       }
@@ -1484,6 +1707,9 @@
         }
       }
     },
+    "Minimal View" : {
+
+    },
     "minutes" : {
       "localizations" : {
         "zh-Hans" : {
@@ -1702,6 +1928,9 @@
         }
       }
     },
+    "PAUSED" : {
+
+    },
     "PLACE\nYOUR\nPASTA\nHERE" : {
       "localizations" : {
         "zh-Hans" : {
@@ -1742,6 +1971,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "手機平放，意粉放在紅色圓圈內。"
+          }
+        }
+      }
+    },
+    "Please let us know what's\nbothering you and we'll improve" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请告诉我们\n哪里不好，我们会改进"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請告訴我們\n哪裡不好，我們會改進"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請話俾我哋知\n邊度唔好，我哋會改進"
           }
         }
       }
@@ -2406,6 +2658,29 @@
         }
       }
     },
+    "Sorry to hear that 😔" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "很遗憾听到这个 😔"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "很遺憾聽到這個 😔"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好遺憾聽到呢個 😔"
+          }
+        }
+      }
+    },
     "Sort" : {
 
     },
@@ -2712,6 +2987,9 @@
         }
       }
     },
+    "Toggle Pause" : {
+
+    },
     "Track all your cooking records in one place: averages, most selected options, calories, cooking time, and Pasta Points." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3007,10 +3285,28 @@
     "Yun (Junior Chatterbox Officer)" : {
 
     },
+    "나중에" : {
+
+    },
+    "닫기" : {
+
+    },
+    "아쉬우셨군요 😔" : {
+
+    },
+    "어떤 점이 불편하신지\n알려주시면 개선하겠습니다" : {
+
+    },
     "오른쪽 항목" : {
 
     },
     "왼쪽 항목" : {
+
+    },
+    "좋아해주셔서 기뻐요! 😊" : {
+
+    },
+    "파스타 러버들이\n이 앱을 찾을 수 있게\n리뷰 하나만 부탁드릴게요\n\n(정말 짧게 써도 OK!)" : {
 
     }
   },

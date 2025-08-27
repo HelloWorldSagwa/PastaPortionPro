@@ -19,6 +19,7 @@ struct MainIntro: View {
     
     @EnvironmentObject var presentData : PresentData
     @StateObject private var dataLoader = DataLoader()
+    @StateObject private var reviewManager = ReviewRequestManager.shared
     @State private var firstMeet : Bool = true
     @State private var firstLogin : Bool = true
     
@@ -52,6 +53,13 @@ struct MainIntro: View {
                 }else if presentData.currentView == "LoggedOn"{
                     
                     HomeView()
+                        .onAppear {
+                            // 1.3 이전 사용자에게 리뷰 요청
+                            reviewManager.checkAndRequestReview()
+                        }
+                        .overlay(
+                            ReviewRequestView()
+                        )
                     
                 }else{
                     

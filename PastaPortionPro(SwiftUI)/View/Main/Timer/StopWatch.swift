@@ -11,6 +11,7 @@ import UserNotifications
 import AVFoundation
 import WidgetKit
 import ActivityKit
+import StoreKit
 
 
 
@@ -168,6 +169,8 @@ struct WatchScreen: View {
     
     
     @State private var adjustSeconds : Float = 30
+    @StateObject private var reviewManager = ReviewRequestManager.shared
+    @State private var showReviewRequest = false
     
     var maxSeconds : Float{
         get{
@@ -199,6 +202,7 @@ struct WatchScreen: View {
     // 스타트 버튼 영역
     @State private var isStartButtonTapped = false
     @State private var isPuaseButtonTapped = false
+    @State private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
     
     
     // 파스타 종류
@@ -309,7 +313,9 @@ struct WatchScreen: View {
                     
                     // 타이머 처음 표시
                         .onAppear(perform: {
-
+                            // 리뷰 요청 체크 (1.3 이전 사용자)
+                            reviewManager.checkAndRequestReview()
+                            
                             if Settings.historyID != "" || Settings.newHistoryID != ""{
                                 if seconds == 0 {
                                     seconds = 480
@@ -376,19 +382,67 @@ struct WatchScreen: View {
                     
                     // 백그라운드 처리
                         .onChange(of: scenePhase){ newValue in
+                            print("\n🔄 Scene Phase Changed to: \(newValue)")
+                            
                             if isStartButtonTapped {
-                                if newValue == .active{
+                                if newValue == .background {
+                                    // 백그라운드로 갈 때 - 현재 시간 저장 (inactive는 무시)
+                                    Settings.backgroundTime = Date()
+                                    print("📱 App going to background")
+                                    print("   - Timer is: \(isPuaseButtonTapped ? "PAUSED" : "RUNNING")")
+                                    print("   - Current seconds: \(seconds)")
+                                    print("   - Background time saved: \(Settings.backgroundTime)")
+                                    print("   - Timer object: \(timer != nil ? "EXISTS" : "NIL")")
+                                } else if newValue == .active {
                                     // 앱이 활성화 상태일때
-                                    let elapsedTime = Float(round(Date().timeIntervalSince(Settings.backgroundTime)))
-                                    // Settings.backgroundTime : 앱이 꺼지면 항상 실행되게 돼 있음
-                                    print("time Interval : \(elapsedTime)")
-                                    if seconds <= elapsedTime{
-                                        seconds = 0
-                                    }else{
-                                        seconds -= elapsedTime
+                                    print("📱 App became active")
+                                    
+                                    // backgroundTime이 유효한지 확인 (1시간 이내)
+                                    let timeSinceBackground = Date().timeIntervalSince(Settings.backgroundTime)
+                                    print("   - Time since background: \(String(format: "%.1f", timeSinceBackground))s")
+                                    print("   - Timer is: \(isPuaseButtonTapped ? "PAUSED" : "RUNNING")")
+                                    print("   - Timer object: \(timer != nil ? "EXISTS" : "NIL")")
+                                    
+                                    if timeSinceBackground > 3600 {
+                                        // 1시간 이상 경과했다면 무시 (이전 세션의 값일 가능성)
+                                        print("   ⚠️ Background time too old, ignoring")
+                                    } else if !isPuaseButtonTapped && timeSinceBackground > 1 {
+                                        // 일시정지 상태가 아니고 1초 이상 차이가 있을 때만 계산
+                                        let elapsedTime = Float(round(timeSinceBackground))
+                                        print("   ⏰ Adjusting for background time: \(elapsedTime)s")
+                                        
+                                        // 타이머를 일시적으로 중지하고 시간 조정
+                                        timer?.invalidate()
+                                        
+                                        if seconds <= elapsedTime {
+                                            seconds = 0
+                                            print("   → Timer reached 0")
+                                        } else {
+                                            seconds -= elapsedTime
+                                            print("   → New seconds: \(seconds)")
+                                            
+                                            // 타이머 재시작
+                                            print("   → Restarting timer...")
+                                            timerStart(isResuming: true)
+                                        }
+                                    } else if isPuaseButtonTapped {
+                                        print("   ⏸️ Timer is paused, no adjustment needed")
+                                    } else {
+                                        print("   ✅ No significant time elapsed, continuing normally")
                                     }
+                                    
+                                    // Dynamic Island와 동기화
+                                    #if canImport(ActivityKit)
+                                    if #available(iOS 16.1, *) {
+                                        print("   → Syncing Live Activity: \(Int(seconds))s, isPaused: \(isPuaseButtonTapped)")
+                                        PastaTimerActivityManager.shared.updateActivity(remainingSeconds: Int(seconds), isPaused: isPuaseButtonTapped)
+                                    }
+                                    #endif
+                                } else if newValue == .inactive {
+                                    print("📱 App became inactive (transitioning)")
                                 }
-
+                            } else {
+                                print("   Timer not started, ignoring scene change")
                             }
                            
                             
@@ -477,13 +531,41 @@ struct WatchScreen: View {
                             self.timer?.invalidate() // 타이머중단
                             manager.cancelAllNotifications() // 노티피케이션 취소
                             isPuaseButtonTapped = true
+                            // isStartButtonTapped는 true로 유지 (타이머가 활성 상태임을 나타냄)
                             
+                            print("⏸️ Pause button pressed at \(seconds) seconds")
+                            print("   Timer invalidated but isStartButtonTapped remains true")
+                            
+                            // Pause Live Activity immediately
+                            #if canImport(ActivityKit)
+                            if #available(iOS 16.1, *) {
+                                print("📱 Pausing Live Activity with \(Int(seconds))s remaining")
+                                PastaTimerActivityManager.shared.updateActivity(remainingSeconds: Int(seconds), isPaused: true)
+                            } else {
+                                print("⚠️ iOS 16.1+ required for Live Activity")
+                            }
+                            #else
+                            print("⚠️ ActivityKit not imported")
+                            #endif
                             
                         }else{
                             
                             
                             isPuaseButtonTapped = false
-                            timerStart()
+                            // isStartButtonTapped는 이미 true이므로 유지
+                            
+                            print("🔄 Resume button pressed, current seconds: \(seconds)")
+                            print("   isStartButtonTapped remains true, isPuaseButtonTapped: false")
+                            
+                            // Resume Live Activity with current seconds
+                            #if canImport(ActivityKit)
+                            if #available(iOS 16.1, *) {
+                                print("📱 Calling updateActivity with seconds: \(Int(seconds)), isPaused: false")
+                                PastaTimerActivityManager.shared.updateActivity(remainingSeconds: Int(seconds), isPaused: false)
+                            }
+                            #endif
+                            
+                            timerStart(isResuming: true)  // 재개 플래그 추가
                             startNotification() // 노티피케이션 시작
                          
                         }
@@ -505,6 +587,16 @@ struct WatchScreen: View {
                         manager.cancelAllNotifications()
                         Settings.deactivateAllViews = false
                         isStartButtonTapped = false
+                        
+                        // 백그라운드 작업 종료
+                        endBackgroundTask()
+                        
+                        // Stop Live Activity when reset
+                        #if canImport(ActivityKit)
+                        if #available(iOS 16.1, *) {
+                            PastaTimerActivityManager.shared.stopActivity()
+                        }
+                        #endif
                         
                         UIApplication.shared.isIdleTimerDisabled = false // 잠금화면 전환 켜짐
                         
@@ -620,6 +712,10 @@ struct WatchScreen: View {
 
         }
         .padding(.horizontal, 20)
+        .overlay {
+            // 리뷰 요청 뷰 (알림 표시용)
+            ReviewRequestView()
+        }
         
         
     }
@@ -686,6 +782,8 @@ struct WatchScreen: View {
         secondsForReset = round(seconds)// 처음 설정 시간 저장 (시간 초기화)
         seconds = round(seconds)
         
+        // backgroundTime 초기화 - 이전 세션의 값이 남아있을 수 있음
+        Settings.backgroundTime = Date()
         
         isStartButtonTapped = true      // 타이머버튼 동작감지
         timerStart()                    // 타이머 시작
@@ -693,6 +791,9 @@ struct WatchScreen: View {
         startNotification()
         
         UIApplication.shared.isIdleTimerDisabled = true // 잠금화면 전환 끔
+        
+        // 백그라운드 작업 시작
+        startBackgroundTask()
         
         
     }
@@ -707,60 +808,160 @@ struct WatchScreen: View {
       }
     
     
-    private func timerStart(){
+    // 백그라운드 작업 시작
+    private func startBackgroundTask() {
+        print("🔋 Starting background task for timer")
+        
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "PastaTimer") {
+            // 시간 초과시 호출됨
+            print("⚠️ Background task expired")
+            self.endBackgroundTask()
+        }
+        
+        if backgroundTaskID != .invalid {
+            print("✅ Background task started successfully")
+            print("   - Task ID: \(backgroundTaskID)")
+            print("   - Background time remaining: \(UIApplication.shared.backgroundTimeRemaining)s")
+        }
+    }
+    
+    // 백그라운드 작업 종료
+    private func endBackgroundTask() {
+        if backgroundTaskID != .invalid {
+            print("🔋 Ending background task")
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
+        }
+    }
+    
+    private func timerStart(isResuming: Bool = false){
         
         timer?.invalidate()
         
-        if isStartButtonTapped{
-            print("🚀 Timer started with \(seconds) seconds")
+        // pause 상태가 아닐 때만 타이머 시작
+        if isStartButtonTapped && !isPuaseButtonTapped {
+            print("🚀 Timer \(isResuming ? "resumed" : "started") with \(seconds) seconds")
             
-            // Start Live Activity for Dynamic Island and Lock Screen
-            // NOTE: PastaTimerActivity.swift must be added to project target first
-            // Uncomment below when file is added to Xcode project
-            /*
-            #if canImport(ActivityKit)
-            if #available(iOS 16.1, *) {
-                let pastaName = "Pasta"  // Default pasta name
-                PastaTimerActivityManager.shared.startActivity(pastaName: pastaName, totalSeconds: seconds)
-            } else {
-                print("⚠️ Live Activity requires iOS 16.1+")
+            // Only start new Live Activity if not resuming
+            if !isResuming {
+                // Start Live Activity for Dynamic Island and Lock Screen
+                // NOTE: PastaTimerActivity.swift must be added to project target first
+                // Uncomment below when file is added to Xcode project
+                
+                #if canImport(ActivityKit)
+                if #available(iOS 16.1, *) {
+                    // 파스타 이름은 일단 기본값 사용 (나중에 실제 파스타 이름 연결 필요)
+                    let pastaName = "Pasta"
+                    
+                    // Doneness 텍스트 결정 (Custom이면 "Custom", 아니면 실제 이름)
+                    let donenessText: String
+                    if isCustomButtonTapped || selectedDoneness == "Custom" {
+                        donenessText = "Custom"
+                    } else {
+                        // doneness dictionary에서 실제 이름 가져오기
+                        donenessText = doneness[selectedDoneness] ?? "Custom"
+                    }
+                    
+                    print("🍝 Starting Live Activity - Pasta: \(pastaName), Doneness: \(donenessText), Total: \(Int(seconds))s")
+                    PastaTimerActivityManager.shared.startActivity(
+                        pastaName: pastaName,
+                        totalSeconds: Int(seconds),
+                        doneness: donenessText
+                    )
+                } else {
+                    print("⚠️ Live Activity requires iOS 16.1+")
+                }
+                #endif
             }
-            #endif
-            */
             
-            self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true){ timer in
+            
+            // 백그라운드에서도 작동하는 타이머 생성
+            let newTimer = Timer(timeInterval: 1.0, repeats: true) { timer in
+                // 타이머가 유효한지 확인
+                guard timer.isValid else {
+                    print("❌ Timer is invalid, stopping")
+                    return
+                }
+                
                 if self.seconds > 0{
                     self.seconds -= 1
-                    print("⏱️ Timer tick: \(self.seconds) seconds remaining")
+                    let progress = ((self.secondsForReset - self.seconds) / self.secondsForReset) * 100
+                    print("\n⏱️ TIMER TICK:")
+                    print("   - Remaining: \(Int(self.seconds))s")
+                    print("   - Total: \(Int(self.secondsForReset))s")
+                    print("   - Progress: \(String(format: "%.1f", progress))%")
+                    print("   - Time: \(self.timeFormatted(TimeInterval(self.seconds)))")
+                    print("   - Timer valid: \(timer.isValid)")
                     
-                    // Note: Live Activity uses Date-based countdown, no need for updates every second
+                    // Update Live Activity every second for accurate progress bar
+                    #if canImport(ActivityKit)
+                    if #available(iOS 16.1, *) {
+                        print("   → Updating Live Activity...")
+                        PastaTimerActivityManager.shared.updateActivity(remainingSeconds: Int(self.seconds), isPaused: false)
+                    } else {
+                        print("   ⚠️ iOS 16.1+ required for Live Activity")
+                    }
+                    #else
+                    print("   ⚠️ ActivityKit not imported")
+                    #endif
+                    
+                    // 0초가 되면 즉시 종료 (1 -> 0 전환 시점)
+                    if self.seconds == 0 {
+                        timer.invalidate()
+                        print("✅ Timer reached 0 - stopping immediately")
+                        
+                        // 백그라운드 작업 종료
+                        self.endBackgroundTask()
+                        
+                        // Stop Live Activity immediately when reaching 0
+                        #if canImport(ActivityKit)
+                        if #available(iOS 16.1, *) {
+                            PastaTimerActivityManager.shared.stopActivity()
+                        }
+                        #endif
+                    }
                 }else{
+                    // 이미 0초 이하인 경우 (fallback)
                     timer.invalidate()
-                    print("✅ Timer completed")
+                    print("✅ Timer completed (already at 0)")
                     
                     // Stop Live Activity
-                    /*
                     #if canImport(ActivityKit)
                     if #available(iOS 16.1, *) {
                         PastaTimerActivityManager.shared.stopActivity()
                     }
                     #endif
-                    */
                 }
             }
             
-        }else{
-            timer?.invalidate()
-            print("⏸️ Timer paused")
+            // 타이머를 저장하고 RunLoop에 추가
+            self.timer = newTimer
             
-            // Pause Live Activity
-            /*
+            // RunLoop의 common 모드에 추가하여 백그라운드/저전력 모드에서도 작동
+            RunLoop.current.add(newTimer, forMode: .common)
+            RunLoop.main.add(newTimer, forMode: .default)
+            
+            print("✅ Timer added to RunLoop (common & default modes)")
+            print("   - Timer tolerance: 0.1s for battery optimization")
+            
+            // 타이머 허용 오차 설정 (배터리 최적화)
+            newTimer.tolerance = 0.1
+            
+        } else if isPuaseButtonTapped {
+            // pause 상태일 때만 이 블록 실행
+            timer?.invalidate()
+            print("⏸️ Timer is in paused state at \(seconds) seconds")
+            
+            // Pause Live Activity with current remaining time
             #if canImport(ActivityKit)
             if #available(iOS 16.1, *) {
-                PastaTimerActivityManager.shared.pauseActivity()
+                // First update with current seconds, then pause
+                PastaTimerActivityManager.shared.updateActivity(remainingSeconds: Int(seconds), isPaused: true)
             }
             #endif
-            */
+        } else {
+            // 타이머가 시작되지 않은 상태
+            print("⚠️ Timer not started yet (isStartButtonTapped: \(isStartButtonTapped))")
         }
         
     }
@@ -951,4 +1152,138 @@ private struct TopStack : View {
        }
        .padding(.vertical, -10)
    }
+}
+
+// MARK: - Review Request Manager for 1.3
+class ReviewRequestManager: ObservableObject {
+    static let shared = ReviewRequestManager()
+    
+    @Published var showEmotionCheck = false
+    @Published var showReviewRequest = false
+    @Published var showFeedbackForm = false
+    
+    private init() {}
+    
+    // 1.3 이전 사용자 체크 및 리뷰 요청
+    func checkAndRequestReview() {
+        // 이미 1.3에서 요청했는지 확인
+        let hasRequestedReview = UserDefaults.standard.bool(forKey: "hasRequestedReviewFor1.3")
+        
+        if hasRequestedReview {
+            return // 이미 요청했으면 종료
+        }
+        
+        // UserDefaults에서 이전 버전 확인
+        let lastVersion = UserDefaults.standard.string(forKey: "lastAppVersion") ?? "1.0"
+        let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.3"
+        
+        // 처음 실행이거나 1.3 이전 버전 사용자면 즉시 리뷰 요청
+        if lastVersion < "1.3" {
+            DispatchQueue.main.async {
+                self.showEmotionCheck = true
+                UserDefaults.standard.set(true, forKey: "hasRequestedReviewFor1.3")
+                UserDefaults.standard.set(currentVersion, forKey: "lastAppVersion")
+            }
+        }
+    }
+    
+    // 리뷰 응답 로깅 (UserDefaults 사용)
+    func logReviewResponse(response: String) {
+        UserDefaults.standard.set(response, forKey: "reviewResponse1.3")
+        UserDefaults.standard.set(Date(), forKey: "reviewResponseDate1.3")
+    }
+}
+
+// SwiftUI Views for Review Request
+struct ReviewRequestView: View {
+    @StateObject private var manager = ReviewRequestManager.shared
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        EmptyView()
+            .alert("🍝 오래 기다리셨죠?", isPresented: $manager.showEmotionCheck) {
+                Button("😊 최고예요!", role: .none) {
+                    manager.showEmotionCheck = false
+                    manager.showReviewRequest = true
+                    manager.logReviewResponse(response: "positive")
+                }
+                Button("😐 글쎄요", role: .none) {
+                    manager.showEmotionCheck = false
+                    manager.showFeedbackForm = true
+                    manager.logReviewResponse(response: "negative")
+                }
+            } message: {
+                Text("""
+                Dynamic Island 드디어 추가!
+                이제 더 편하게 요리하세요
+                
+                어떠신가요?
+                """)
+            }
+            .alert("좋아해주셔서 기뻐요! 😊", isPresented: $manager.showReviewRequest) {
+                Button("⭐ 리뷰 쓰기", role: .none) {
+                    requestAppStoreReview()
+                    manager.logReviewResponse(response: "wrote_review")
+                }
+                Button("나중에", role: .cancel) {
+                    manager.logReviewResponse(response: "review_later")
+                }
+            } message: {
+                Text("""
+                파스타 러버들이
+                이 앱을 찾을 수 있게
+                리뷰 하나만 부탁드릴게요
+                
+                (정말 짧게 써도 OK!)
+                """)
+            }
+            .alert("아쉬우셨군요 😔", isPresented: $manager.showFeedbackForm) {
+                Button("📧 이메일로 피드백 보내기", role: .none) {
+                    sendFeedbackEmail()
+                    manager.logReviewResponse(response: "sent_email")
+                }
+                Button("닫기", role: .cancel) {
+                    manager.logReviewResponse(response: "feedback_dismissed")
+                }
+            } message: {
+                Text("""
+                어떤 점이 불편하신지
+                알려주시면 개선하겠습니다
+                """)
+            }
+    }
+    
+    private func requestAppStoreReview() {
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            SKStoreReviewController.requestReview(in: scene)
+        }
+    }
+    
+    private func sendFeedbackEmail() {
+        let email = "studiofiveteam@gmail.com"
+        let subject = "[PastaPortionPro 1.3] 피드백"
+        let body = """
+        앱 버전: 1.3
+        기기: \(UIDevice.current.model)
+        iOS: \(UIDevice.current.systemVersion)
+        
+        피드백:
+        
+        """
+        
+        // URL 인코딩
+        let subjectEncoded = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let bodyEncoded = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        // mailto URL 생성
+        if let url = URL(string: "mailto:\(email)?subject=\(subjectEncoded)&body=\(bodyEncoded)") {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            } else {
+                // 이메일 앱이 없으면 클립보드에 복사
+                UIPasteboard.general.string = email
+                print("Email address copied to clipboard: \(email)")
+            }
+        }
+    }
 }

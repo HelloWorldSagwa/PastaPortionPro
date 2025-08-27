@@ -42,6 +42,10 @@ struct PastaPortionPro_App: App {
                     // v1.3 부터 프리미엄 액세스로 전체 변경
                     Settings.premiumAccess = true
                     
+                    // 현재 버전 저장 (리뷰 요청용)
+                    let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.3"
+                    UserDefaults.standard.set(currentVersion, forKey: "lastAppVersion")
+                    
                 })
             
             
